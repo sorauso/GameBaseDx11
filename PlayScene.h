@@ -19,5 +19,9 @@ public:
 
 	//開放
 	void Release() override;
+private:
+	int hModel_;
+	float counter_;
+	Transform ot_;
 };
 

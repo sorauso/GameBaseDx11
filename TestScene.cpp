@@ -21,16 +21,19 @@ void TestScene::Update()
 {
 	if (Input::IsKey(DIK_SPACE))
 	{
-		SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
-		pSceneManager->ChangeScene(SCENE_ID_PLAY);
+		//SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");//シーンマネージャーを探してくる//見つからない場合もある
+		SceneManager* pSceneManager = (SceneManager*)(this->GetParent());
+		pSceneManager->ChangeScene(SCENE_ID_PLAY);//シーンマネージャーに切り替えたいシーンを伝える
 	}
 }
 
 //描画
 void TestScene::Draw()
 {
-	Image::SetTransform(hTitlePict_, transform_);
-	Image::Draw(hTitlePict_);
+	transform_.position_ = {0,0,0,};
+	transform_.scale_ = {1.5f,1.5f,1.0f};//画像の大きさの設定
+	Image::SetTransform(hTitlePict_, transform_);//画像の位置や向きの設定
+	Image::Draw(hTitlePict_);//画像の描画
 }
 
 //開放
