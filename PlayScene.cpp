@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
+#include "Player.h"
 
 namespace
 {
@@ -18,6 +19,7 @@ void PlayScene::Initialize()
 {
 	hModel_ = Model::Load("Oden.fbx");
 	assert(hModel_ >= 0);
+	Instantiate<Player>(this);
 }
 
 void PlayScene::Update()
@@ -62,9 +64,10 @@ void PlayScene::Update()
 
 
 
-	ot_.position_ = { cosf(counter_ / 50) * xmova,-2,(sinf(counter_ / 50) * zmova) + 10 };
+	/*ot_.position_ = { cosf(counter_ / 50) * xmova,-2,(sinf(counter_ / 50) * zmova) + 10 };
 	ot_.scale_ = { 1.0f,sinf(counter_ / 40) + 1.1f,1.0f };
-	ot_.rotate_ = { 0,counter_ * yrot,0 };
+	ot_.rotate_ = { 20.0f,counter_ * yrot,0 };*/
+	ot_.position_ = { cosf(counter_ / 50) * 10,-2, 20};
 }
 
 void PlayScene::Draw()
