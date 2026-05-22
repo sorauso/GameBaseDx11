@@ -2,6 +2,8 @@
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 #include "Player.h"
+#include "Enemy.h"
+#include "Engine/SceneManager.h"
 
 namespace
 {
@@ -17,63 +19,21 @@ PlayScene::PlayScene(GameObject* parent)
 
 void PlayScene::Initialize()
 {
-	hModel_ = Model::Load("Oden.fbx");
-	assert(hModel_ >= 0);
 	Instantiate<Player>(this);
+	Instantiate<Enemy>(this);
 }
 
 void PlayScene::Update()
 {
-	counter_ += 1.0f;
-	if (Input::IsKey(DIK_A))
+	if (FindObject("Enemy") == nullptr)
 	{
-		xmova++;
+		SceneManager* sceneManager = (SceneManager*)(this->GetParent());
+		sceneManager->ChangeScene(SCENE_ID_CLEAR);
 	}
-	if (Input::IsKey(DIK_D))
-	{
-		xmova--;
-		if (xmova < 0)
-		{
-			xmova = 0;
-		}
-	}
-	if (Input::IsKey(DIK_W))
-	{
-		zmova--;
-		if (zmova < 0)
-		{
-			zmova = 0;
-		}
-	}
-	if (Input::IsKey(DIK_S))
-	{
-		zmova++;
-	}
-	if (Input::IsKey(DIK_Q))
-	{
-		yrot++;
-	}
-	if (Input::IsKey(DIK_E))
-	{
-		yrot--;
-		if (yrot < 0)
-		{
-			yrot = 0;
-		}
-	}
-
-
-
-	/*ot_.position_ = { cosf(counter_ / 50) * xmova,-2,(sinf(counter_ / 50) * zmova) + 10 };
-	ot_.scale_ = { 1.0f,sinf(counter_ / 40) + 1.1f,1.0f };
-	ot_.rotate_ = { 20.0f,counter_ * yrot,0 };*/
-	ot_.position_ = { cosf(counter_ / 50) * 10,-2, 20};
 }
 
 void PlayScene::Draw()
 {
-	Model::SetTransform(hModel_, ot_);
-	Model::Draw(hModel_);
 }
 
 void PlayScene::Release()

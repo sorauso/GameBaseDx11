@@ -19,7 +19,7 @@ void TestScene::Initialize()
 //更新
 void TestScene::Update()
 {
-	if (Input::IsKey(DIK_SPACE))
+	if (Input::IsKey(DIK_N))
 	{
 		//SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");//シーンマネージャーを探してくる//見つからない場合もある
 		SceneManager* pSceneManager = (SceneManager*)(this->GetParent());

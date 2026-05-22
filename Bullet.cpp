@@ -2,9 +2,9 @@
 #include "Engine/Model.h"
 
 Bullet::Bullet(GameObject* parent)
-	:GameObject(parent, "Bullet"), hModel_(-1)
+	:GameObject(parent, "Bullet"), hModel_(-1),hp(50)
 {
-	ot_.position_ = parent->GetPosition();
+
 }
 
 Bullet::~Bullet()
@@ -13,20 +13,39 @@ Bullet::~Bullet()
 
 void Bullet::Initialize()
 {
-	hModel_ = Model::Load("Oden.fbx");
+	hModel_ = Model::Load("bullet.fbx");
 	assert(hModel_ >= 0);
-	ot_.rotate_.x = 90;
-	ot_.scale_ = { 0.2f,0.2f,0.2f };
+	transform_.scale_ = { 0.4f,0.4f,0.8f };
+	SphereCollider* collider = new SphereCollider(XMFLOAT3(0.0f, 0.0f, 0.0f), 0.5f);
+	AddCollider(collider);
 }
 
 void Bullet::Update()
 {
-	ot_.position_.z += 0.4f;
+	XMMATRIX matRot =
+		XMMatrixRotationRollPitchYaw(
+			transform_.rotate_.x,
+			transform_.rotate_.y,
+			transform_.rotate_.z
+		);
+	XMMATRIX matTrans =
+		XMMatrixTranslation(
+			0,0,1);
+	XMMATRIX M =  matTrans * matRot;
+	XMVECTOR  mVectoer = XMLoadFloat3(&transform_.position_);
+	XMVECTOR mV2 = XMVector3TransformCoord(mVectoer,M);
+	XMStoreFloat3(&transform_.position_, mV2);
+	//transform_.position_.z += 0.4f;
+	if (hp < 0)
+	{
+		KillMe();
+	}
+	hp--;
 }
 
 void Bullet::Draw()
 {
-	Model::SetTransform(hModel_, ot_);
+	Model::SetTransform(hModel_, transform_);
 	Model::Draw(hModel_);
 }
 

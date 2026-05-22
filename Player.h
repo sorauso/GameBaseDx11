@@ -12,6 +12,5 @@ public:
     void Release() override;
 private:
     int hModel_;
-    Transform ot_;
 };
 
