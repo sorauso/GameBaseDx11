@@ -1,8 +1,9 @@
 #include "PlayScene.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
+#include "Engine/Image.h"
 #include "Player.h"
-#include "Enemy.h"
+#include "EnemyMather.h"
 #include "Engine/SceneManager.h"
 
 namespace
@@ -19,13 +20,16 @@ PlayScene::PlayScene(GameObject* parent)
 
 void PlayScene::Initialize()
 {
+	hModel_ = Image::Load("PLAY.png");
+	assert(hModel_ >= 0);
 	Instantiate<Player>(this);
-	Instantiate<Enemy>(this);
+	Instantiate<EnemyMather>(this);
 }
 
 void PlayScene::Update()
 {
-	if (FindObject("Enemy") == nullptr)
+
+	if (FindObject("EnemyMather") == nullptr)
 	{
 		SceneManager* sceneManager = (SceneManager*)(this->GetParent());
 		sceneManager->ChangeScene(SCENE_ID_CLEAR);
@@ -34,6 +38,10 @@ void PlayScene::Update()
 
 void PlayScene::Draw()
 {
+	transform_.position_ = { 0,0,0, };
+	transform_.scale_ = { 1.0f,1.0f,1.0f };//画像の大きさの設定
+	Image::SetTransform(hModel_, transform_);//画像の位置や向きの設定
+	Image::Draw(hModel_);//画像の描画
 }
 
 void PlayScene::Release()

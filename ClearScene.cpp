@@ -2,6 +2,10 @@
 #include "Engine/Image.h"
 #include "Engine/Input.h"
 #include "Engine/SceneManager.h"
+namespace
+{
+	int counter = 0;
+}
 
 ClearScene::ClearScene(GameObject* parent)
 	:GameObject(parent, "ClearScene"), hImage_(-1)
@@ -12,14 +16,22 @@ void ClearScene::Initialize()
 {
 	hImage_ = Image::Load("CLEAR.png");
 	assert(hImage_ >= 0);
+	counter = 0;
 }
 
 void ClearScene::Update()
 {
-	if (Input::IsKey(DIK_N))
+	if (counter > 30)
 	{
-		SceneManager* sceneManager = (SceneManager*)(this->GetParent());
-		sceneManager->ChangeScene(SCENE_ID_TEST);
+		if (Input::IsKeyDown(DIK_N))
+		{
+			SceneManager* sceneManager = (SceneManager*)(this->GetParent());
+			sceneManager->ChangeScene(SCENE_ID_TITLE);
+		}
+	}
+	else
+	{
+		counter++;
 	}
 }
 

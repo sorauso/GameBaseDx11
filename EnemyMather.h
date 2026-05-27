@@ -1,18 +1,14 @@
 #pragma once
 #include "Engine/GameObject.h"
-class Player :
+class EnemyMather :
     public GameObject
 {
 public:
-    Player(GameObject* parent);
-    ~Player();
+    EnemyMather(GameObject* parent);
+    ~EnemyMather();
     void Initialize() override;
     void Update() override;
     void Draw() override;
     void Release() override;
-private:
-    void Camera();
-private:
-    int hModel_;
 };
 

@@ -2,6 +2,7 @@
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 #include "Bullet.h"
+#include "Engine/Camera.h"
 
 Player::Player(GameObject* parent)
 	:GameObject(parent,"Player"),hModel_(-1)
@@ -133,4 +134,11 @@ void Player::Draw()
 
 void Player::Release()
 {
+}
+
+void Player::Camera()
+{
+	Camera::SetPosition(XMFLOAT3(0, 3, -8));
+	XMFLOAT3 tp = transform_.position_;
+	Camera::SetTarget(tp);
 }
