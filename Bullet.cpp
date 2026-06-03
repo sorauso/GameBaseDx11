@@ -36,8 +36,9 @@ void Bullet::Initialize()
 
 void Bullet::Update()
 {
-	XMVECTOR  v = XMVECTOR(transform_.position_.x, transform_.position_.y, transform_.position_.z, 0.0f);
-	//transform_.position_.z += 0.4f;
+	XMVECTOR  v = XMVectorSet( transform_.position_.x, transform_.position_.y, transform_.position_.z, 0.0f );
+	XMVECTOR tpos = XMVector3TransformCoord(v, xM);
+	XMStoreFloat3(&transform_.position_, v);
 	if (hp < 0)
 	{
 		KillMe();
