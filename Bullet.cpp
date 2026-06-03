@@ -1,9 +1,6 @@
 #include "Bullet.h"
 #include "Engine/Model.h"
-namespace
-{
-	XMVECTOR xM;
-}
+
 Bullet::Bullet(GameObject* parent)
 	:GameObject(parent, "Bullet"), hModel_(-1),hp(100)
 {
@@ -22,21 +19,23 @@ void Bullet::Initialize()
 	SphereCollider* collider = new SphereCollider(XMFLOAT3(0.0f, 0.0f, 0.0f), 0.5f);
 	AddCollider(collider);
 
-	XMMATRIX Mr =
-		XMMatrixRotationRollPitchYaw(
-			transform_.rotate_.x,
-			transform_.rotate_.y,
-			transform_.rotate_.z
-		);
-	XMVECTOR Vt = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
-	xM = XMVector3TransformNormal(Vt, Mr);
-	xM;
 }
 
 void Bullet::Update()
 {
 	float speed = 0.5f;
-
+	float pitch = XMConvertToRadians(transform_.rotate_.x);
+	float yaw = XMConvertToRadians(transform_.rotate_.y);
+	float roll = XMConvertToRadians(transform_.rotate_.z);
+	XMMATRIX Mr =
+		XMMatrixRotationRollPitchYaw(
+			pitch,
+			yaw,
+			roll
+		);
+	XMVECTOR Vt = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	XMVECTOR xM = XMVector3TransformNormal(Vt, Mr);
+	xM;
 	XMVECTOR pos = XMLoadFloat3(&transform_.position_);
 	pos = XMVectorAdd(pos, XMVectorScale(xM, speed));
 	XMStoreFloat3(&transform_.position_, pos);
