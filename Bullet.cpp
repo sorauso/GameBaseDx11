@@ -2,7 +2,7 @@
 #include "Engine/Model.h"
 namespace
 {
-	XMMATRIX xM;
+	XMVECTOR xM;
 }
 Bullet::Bullet(GameObject* parent)
 	:GameObject(parent, "Bullet"), hModel_(-1),hp(100)
@@ -28,17 +28,18 @@ void Bullet::Initialize()
 			transform_.rotate_.y,
 			transform_.rotate_.z
 		);
-	XMMATRIX Mt =
-		XMMatrixTranslation(
-			0, 0, 1);
-	xM = XMMatrixMultiply(Mr,Mt);
+	XMVECTOR Vt = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	xM = XMVector3TransformNormal(Vt, Mr);
+	xM;
 }
 
 void Bullet::Update()
 {
-	XMVECTOR  v = XMVectorSet( transform_.position_.x, transform_.position_.y, transform_.position_.z, 0.0f );
-	XMVECTOR tpos = XMVector3TransformCoord(v, xM);
-	XMStoreFloat3(&transform_.position_, v);
+	float speed = 0.5f;
+
+	XMVECTOR pos = XMLoadFloat3(&transform_.position_);
+	pos = XMVectorAdd(pos, XMVectorScale(xM, speed));
+	XMStoreFloat3(&transform_.position_, pos);
 	if (hp < 0)
 	{
 		KillMe();
